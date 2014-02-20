@@ -3,9 +3,30 @@ public class BayesNet {
 
 	public static void main(String[] args) 
 	{
-		BayesNet.SumTest1();
+		BayesNet.SumTest2();
 	}
 	
+	
+	private static void SumTest2()
+	{
+		Factor f = new Factor();
+		Variable A = new Variable();
+		Variable B = new Variable();
+		Variable C = new Variable();
+		A.setDesc("a"); B.setDesc("b"); C.setDesc("c");
+		
+		f.getProbabilities().add(new Probability(0.06));
+		f.getProbabilities().add(new Probability(0.24));
+		f.getProbabilities().add(new Probability(0.42));
+		f.getProbabilities().add(new Probability(0.28));
+		f.getProbabilities().add(new Probability(0.18));
+		f.getProbabilities().add(new Probability(0.72));
+		f.getProbabilities().add(new Probability(0.06));
+		f.getProbabilities().add(new Probability(0.04));
+		f.getVariables().add(A); f.getVariables().add(B); f.getVariables().add(C);
+		
+		Factor.SumOut(f, A);
+	}
 	
 	private static void SumTest1()
 	{
@@ -30,7 +51,7 @@ public class BayesNet {
 		Variable A = new Variable();
 		Variable B = new Variable();
 		Variable C = new Variable();
-		A.setDesc("a"); B.setDesc("b"); C.setDesc("C");
+		A.setDesc("a"); B.setDesc("b"); C.setDesc("c");
 		
 //		// test restrict
 		A.setIndex(2); B.setIndex(1); C.setIndex(0);

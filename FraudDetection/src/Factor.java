@@ -115,7 +115,6 @@ public class Factor
 			}
 		}
 		
-		
 		// add variables from first factor
 		for (Variable v : f1.getVariables())
 		{
@@ -150,20 +149,17 @@ public class Factor
 	public static Factor SumOut(Factor fact, Variable var)
 	{
 		Factor f = new Factor();
-		// for each variable in fact that is not var, add up probs where val is the same
 		
 		// create new list of remaining vars 
 		List<Variable> varList = new ArrayList<Variable>(fact.getVariables());
 		for (int i = 0; i < fact.getVariables().size(); i++)
 		{	
-			int indx = fact.getVariables().get(i).getIndex() - 1;
-			if (fact.getVariables().get(i).getIndex() != 0)
-			{
-				fact.getVariables().get(i).setIndex(indx);
-			}
+			int indx = fact.getVariables().size() - 1 - i;
+			varList.get(i).setIndex(indx);
 		}
 		varList.remove(var);
 		
+		// create list of distinct variable combinations from remaining vars
 		List<List<Boolean>> allVarVals = new ArrayList<List<Boolean>>();
 		for (int i = 0; i < fact.getProbabilities().size(); i++)
 		{
@@ -178,7 +174,7 @@ public class Factor
 			}
 		}
 		
-		
+		// for each combination, go through prob list and sum
 		for (List<Boolean> valList : allVarVals)
 		{
 			double summedProb = 0;
