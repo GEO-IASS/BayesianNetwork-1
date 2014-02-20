@@ -23,38 +23,44 @@ public class Factor
 		_probabilities = new ArrayList<Probability>();
 	}
 	
+	public Factor(Factor f)
+	{
+		_variables = new ArrayList<Variable>(f.getVariables());
+		_probabilities = new ArrayList<Probability>(f.getProbabilities());
+	}
+	
 	
 	//================================================================================
     // Public Methods
     //================================================================================
 	
-	public static void Restrict(Factor f, Variable v, boolean val)
+	public static Factor Restrict(Factor fact, Variable var, boolean val)
 	{
 		// check if factor contains variable
-		if (!f.getVariables().contains(v))
+		if (!fact.getVariables().contains(var))
 		{
 			System.out.println("Could not restrict: variable not found.");
-			return;
+			return null;
 		}
 		
+		Factor f = new Factor(fact);
+		
 		// find all probabilities to remove
-		List<Double> toRemove = new ArrayList<Double>();
 		for (int i = 0; i < f.getProbabilities().size(); i++)
 		{
-			if (GetValue(v, i) != val)
+			if (GetValue(var, i) != val)
 			{
-//				toRemove.add(f.getProbabilities().get(i));
 				f.getProbabilities().get(i).isValid = false;
 			}
 		}
 		
 		// remove variable from factor and update indices
-		for (int i = v.getIndex(); i < f.getVariables().size(); i++)
+		for (int i = var.getIndex(); i < f.getVariables().size(); i++)
 		{
 			int idx = f.getVariables().get(i).getIndex() - 1;
 			f.getVariables().get(i).setIndex(idx);
 		}
-		f.getVariables().remove(v);
+		f.getVariables().remove(var);
 		
 		// remove probabilities
 		Iterator<Probability> it = f.getProbabilities().iterator();
@@ -67,11 +73,16 @@ public class Factor
 			}
 		}
 		System.out.println(f.getProbabilities());
+		return f;
+	}
+	
+	public static void Multiply(Factor f1, Factor f2)
+	{
+		
 	}
 	
 	public static boolean GetValue(Variable v, int row)
 	{
-//		int mod = row/(v.getIndex() + 1) % 2;
 		int mod = (row / (int)Math.pow(2, v.getIndex())) % 2;
 		if (mod == 0)
 		{
