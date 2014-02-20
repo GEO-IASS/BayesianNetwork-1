@@ -1,24 +1,49 @@
 
 public class Variable 
 {
-	private int index;
-	private String desc;
+	//================================================================================
+    // Properties
+    //================================================================================
+	private int _index;
+	private String _desc;
 	
+	//================================================================================
+    // Constructors
+    //================================================================================
+	public Variable()
+	{
+	}
 	
-
+	//================================================================================
+    // Overridden Methods
+    //================================================================================
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o != null && o instanceof Variable)
+		{
+			return ((Variable)o).getDesc() == this.getDesc();
+		}
+		
+		return false;
+	}
+	
+	//================================================================================
+    // Accessors
+    //================================================================================
 	public String getDesc() {
-		return desc;
+		return _desc;
 	}
 
 	public void setDesc(String desc) {
-		this.desc = desc;
+		this._desc = desc;
 	}
 
 	public int getIndex() {
-		return index;
+		return _index;
 	}
 
 	public void setIndex(int index) {
-		this.index = index;
+		this._index = index;
 	}
 }
