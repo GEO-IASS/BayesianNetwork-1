@@ -100,6 +100,7 @@ public class Factor
 						double pVal = f1.getProbabilities().get(i).value 
 								* f2.getProbabilities().get(j).value;
 						
+						System.out.format("%d,  %d, %b, %f \n", i, j, f1v, pVal);
 						Probability p = new Probability(pVal);
 						f3.getProbabilities().add(p);
 					}
