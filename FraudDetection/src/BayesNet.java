@@ -64,41 +64,41 @@ public class BayesNet {
 	private static void ProductTest2()
 	{
 		// test product
-				Factor f1 = new Factor();
-				Factor f2 = new Factor();
-				Variable B2 = new Variable();
-				Variable C2 = new Variable();
-				Variable D2 = new Variable();
-				Variable A = new Variable();
-				Variable B = new Variable();
-				Variable C = new Variable();
-				A.setDesc("a"); B.setDesc("b"); C.setDesc("c");
-				B2.setDesc("b"); C2.setDesc("c"); D2.setDesc("d");
-				A.setIndex(2); B.setIndex(1); C.setIndex(0); 
-				B2.setIndex(2); C2.setIndex(1); D2.setIndex(0);  
-				
-				f1.getProbabilities().add(new Probability(0.06));
-				f1.getProbabilities().add(new Probability(0.24));
-				f1.getProbabilities().add(new Probability(0.42));
-				f1.getProbabilities().add(new Probability(0.28));
-				f1.getProbabilities().add(new Probability(0.18));
-				f1.getProbabilities().add(new Probability(0.72));
-				f1.getProbabilities().add(new Probability(0.06));
-				f1.getProbabilities().add(new Probability(0.04));
-				
-				f2.getProbabilities().add(new Probability(0.1));
-				f2.getProbabilities().add(new Probability(0.2));
-				f2.getProbabilities().add(new Probability(0.3));
-				f2.getProbabilities().add(new Probability(0.4));
-				f2.getProbabilities().add(new Probability(0.5));
-				f2.getProbabilities().add(new Probability(0.05));
-				f2.getProbabilities().add(new Probability(0.6));
-				f2.getProbabilities().add(new Probability(0.01));
-				
-				f1.getVariables().add(A); f1.getVariables().add(B); f1.getVariables().add(C);
-				f2.getVariables().add(B2); f2.getVariables().add(C2); f2.getVariables().add(D2);
-				
-				Factor.Multiply(f1, f2);
+		Factor f1 = new Factor();
+		Factor f2 = new Factor();
+		Variable B2 = new Variable();
+		Variable C2 = new Variable();
+		Variable D2 = new Variable();
+		Variable A = new Variable();
+		Variable B = new Variable();
+		Variable C = new Variable();
+		A.setDesc("a"); B.setDesc("b"); C.setDesc("c");
+		B2.setDesc("b"); C2.setDesc("c"); D2.setDesc("d");
+		A.setIndex(2); B.setIndex(1); C.setIndex(0); 
+		B2.setIndex(2); C2.setIndex(1); D2.setIndex(0);  
+		
+		f1.getProbabilities().add(new Probability(0.06));
+		f1.getProbabilities().add(new Probability(0.24));
+		f1.getProbabilities().add(new Probability(0.42));
+		f1.getProbabilities().add(new Probability(0.28));
+		f1.getProbabilities().add(new Probability(0.18));
+		f1.getProbabilities().add(new Probability(0.72));
+		f1.getProbabilities().add(new Probability(0.06));
+		f1.getProbabilities().add(new Probability(0.04));
+		
+		f2.getProbabilities().add(new Probability(0.1));
+		f2.getProbabilities().add(new Probability(0.2));
+		f2.getProbabilities().add(new Probability(0.3));
+		f2.getProbabilities().add(new Probability(0.4));
+		f2.getProbabilities().add(new Probability(0.5));
+		f2.getProbabilities().add(new Probability(0.05));
+		f2.getProbabilities().add(new Probability(0.6));
+		f2.getProbabilities().add(new Probability(0.01));
+		
+		f1.getVariables().add(A); f1.getVariables().add(B); f1.getVariables().add(C);
+		f2.getVariables().add(B2); f2.getVariables().add(C2); f2.getVariables().add(D2);
+		
+		Factor.Multiply(f1, f2);
 	}
 
 }

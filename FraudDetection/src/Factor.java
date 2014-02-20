@@ -89,7 +89,7 @@ public class Factor
 			for (int i = 0; i < f1.getProbabilities().size(); i++)
 			{
 				Variable v1 = f1.getVariables().get(f1.getVariables().indexOf(v));
-				boolean f1v = GetValue(v, i);
+				boolean f1v = GetValue(v1, i);
 				
 				for (int j = 0; j < f2.getProbabilities().size(); j++)
 				{
@@ -108,13 +108,34 @@ public class Factor
 			}
 		}
 		
-		Set<Variable> set = new HashSet<Variable>();
-		set.addAll(f1.getVariables());
-		set.addAll(f2.getVariables());
-		System.out.println(set);
-		f3.setVariables(new ArrayList<Variable>(set));
+		// add variables from first factor
+		for (Variable v : f1.getVariables())
+		{
+			if (!f3.getVariables().contains(v))
+			{
+				f3.getVariables().add(v);
+			}
+		}
+		
+		// add variables from second factor
+		for (Variable v : f2.getVariables())
+		{
+			if (!f3.getVariables().contains(v))
+			{
+				f3.getVariables().add(v);
+			}
+		}
+		
+		// update indices
+		Iterator<Variable> it = f3.getVariables().iterator();
+		int idx = f3.getVariables().size()-1;
+		while(it.hasNext())
+		{
+			Variable v = it.next();
+			v.setIndex(idx);
+			idx--;
+		}
 		System.out.println(f3.getVariables());
-		System.out.println(f3.getProbabilities());
 	}
 	
 	public static boolean GetValue(Variable v, int row)
