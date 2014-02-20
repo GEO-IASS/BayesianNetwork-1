@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -8,8 +9,9 @@ public class Factor
     // Properties
     //================================================================================
 	
-	private List<Variable> _variables;
-	private List<Double> _probabilities;
+	public List<Variable> _variables;
+	public List<Probability> _probabilities;
+	
 	
 	//================================================================================
     // Constructors
@@ -18,12 +20,14 @@ public class Factor
 	public Factor()
 	{
 		_variables = new ArrayList<Variable>();
-		_probabilities = new ArrayList<Double>();
+		_probabilities = new ArrayList<Probability>();
 	}
+	
 	
 	//================================================================================
     // Public Methods
     //================================================================================
+	
 	public static void Restrict(Factor f, Variable v, boolean val)
 	{
 		// check if factor contains variable
@@ -37,9 +41,10 @@ public class Factor
 		List<Double> toRemove = new ArrayList<Double>();
 		for (int i = 0; i < f.getProbabilities().size(); i++)
 		{
-			if (GetValue(v, i) == val)
+			if (GetValue(v, i) != val)
 			{
-				toRemove.add(f.getProbabilities().get(i));
+//				toRemove.add(f.getProbabilities().get(i));
+				f.getProbabilities().get(i).isValid = false;
 			}
 		}
 		
@@ -52,10 +57,16 @@ public class Factor
 		f.getVariables().remove(v);
 		
 		// remove probabilities
-		for (Double d : toRemove)
+		Iterator<Probability> it = f.getProbabilities().iterator();
+		while(it.hasNext())
 		{
-			f.getProbabilities().remove(d);
+			Probability p = it.next();
+			if (p.isValid == false)
+			{
+				it.remove();
+			}
 		}
+		System.out.println(f.getProbabilities());
 	}
 	
 	public static boolean GetValue(Variable v, int row)
@@ -68,6 +79,7 @@ public class Factor
 		return false;
 	}
 	
+	
 	//================================================================================
     // Accessors
     //================================================================================
@@ -78,10 +90,11 @@ public class Factor
 	public void setVariables(List<Variable> _variables) {
 		this._variables = _variables;
 	}
-	public List<Double> getProbabilities() {
+	public List<Probability> getProbabilities() {
 		return _probabilities;
 	}
-	public void setProbabilities(List<Double> _probabilities) {
+	public void setProbabilities(List<Probability> _probabilities) {
 		this._probabilities = _probabilities;
 	}
+	
 }
