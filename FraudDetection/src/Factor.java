@@ -78,35 +78,42 @@ public class Factor
 		return f;
 	}
 	
-	public static void Multiply(Factor f1, Factor f2)
+	public static Factor Multiply(Factor f1, Factor f2)
 	{
 		List<Variable> intersectVars = new ArrayList<Variable>(f1.getVariables());
 		intersectVars.retainAll(f2.getVariables());
 		Factor f3 = new Factor();
 		
-		for (Variable v : intersectVars)
+		for (int i = 0; i < f1.getProbabilities().size(); i++)
 		{
-			for (int i = 0; i < f1.getProbabilities().size(); i++)
+			List<Boolean> varVals1 = new ArrayList<Boolean>();
+			for (Variable v : intersectVars)
 			{
 				Variable v1 = f1.getVariables().get(f1.getVariables().indexOf(v));
-				boolean f1v = GetValue(v1, i);
-				
-				for (int j = 0; j < f2.getProbabilities().size(); j++)
+				varVals1.add(GetValue(v1, i));
+			}
+
+			for (int j = 0; j < f2.getProbabilities().size(); j++)
+			{
+				List<Boolean> varVals2 = new ArrayList<Boolean>();
+				for (Variable v : intersectVars)
 				{
 					Variable v2 = f2.getVariables().get(f2.getVariables().indexOf(v));
-					boolean f2v = GetValue(v2, j);
-					if (f1v == f2v)
-					{
-						double pVal = f1.getProbabilities().get(i).value 
-								* f2.getProbabilities().get(j).value;
-						
-						System.out.format("%d,  %d, %b, %f \n", i, j, f1v, pVal);
-						Probability p = new Probability(pVal);
-						f3.getProbabilities().add(p);
-					}
+					varVals2.add(GetValue(v2, j));
+				}
+				
+				if (varVals1.equals(varVals2))
+				{
+					double pVal = f1.getProbabilities().get(i).value 
+							* f2.getProbabilities().get(j).value;
+					
+					System.out.format("%d,  %d, [%b], %f \n", i, j, varVals1, pVal);
+					Probability p = new Probability(pVal);
+					f3.getProbabilities().add(p);
 				}
 			}
 		}
+		
 		
 		// add variables from first factor
 		for (Variable v : f1.getVariables())
@@ -136,6 +143,12 @@ public class Factor
 			idx--;
 		}
 		System.out.println(f3.getVariables());
+		return f3;
+	}
+	
+	public static void SumOut(Factor fact, Variable var)
+	{
+		
 	}
 	
 	public static boolean GetValue(Variable v, int row)
