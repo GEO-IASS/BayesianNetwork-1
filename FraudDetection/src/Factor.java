@@ -200,6 +200,23 @@ public class Factor
 		return f;
 	}
 	
+	public static Factor Normalize(Factor fact)
+	{
+		List<Probability> probList = fact.getProbabilities();
+		double sum = 0;
+		for (Probability p : probList)
+		{
+			sum += p.value;
+		}
+		for (int i = 0 ; i < fact.getProbabilities().size(); i++)
+		{
+			probList.get(i).value /= sum;
+		}
+		System.out.println(fact.getVariables());
+		System.out.println(fact.getProbabilities());
+		return fact;
+	}
+	
 	public static boolean GetValue(Variable v, int row)
 	{
 		int mod = (row / (int)Math.pow(2, v.getIndex())) % 2;

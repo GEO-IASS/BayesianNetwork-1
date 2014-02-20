@@ -3,9 +3,20 @@ public class BayesNet {
 
 	public static void main(String[] args) 
 	{
-		BayesNet.SumTest2();
+		BayesNet.NormalizeTest1();
 	}
 	
+	public static void NormalizeTest1()
+	{
+		Factor f = new Factor();
+		Variable A = new Variable();
+		A.setDesc("a");
+		A.setIndex(0);
+		f.getProbabilities().add(new Probability(0.00059224));
+		f.getProbabilities().add(new Probability(0.0014919));
+		f.getVariables().add(A);
+		Factor.Normalize(f);
+	}
 	
 	private static void SumTest2()
 	{
