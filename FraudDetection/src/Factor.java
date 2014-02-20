@@ -84,6 +84,7 @@ public class Factor
 		intersectVars.retainAll(f2.getVariables());
 		Factor f3 = new Factor();
 		
+		// for each probability in f1, find corresponding match in f2 and multiply
 		for (int i = 0; i < f1.getProbabilities().size(); i++)
 		{
 			List<Boolean> varVals1 = new ArrayList<Boolean>();
