@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 public class Factor
@@ -78,7 +80,40 @@ public class Factor
 	
 	public static void Multiply(Factor f1, Factor f2)
 	{
+		List<Variable> intersectVars = new ArrayList<Variable>(f1.getVariables());
+		intersectVars.retainAll(f2.getVariables());
+		Factor f3 = new Factor();
 		
+		for (Variable v : intersectVars)
+		{
+			for (int i = 0; i < f1.getProbabilities().size(); i++)
+			{
+				Variable v1 = f1.getVariables().get(f1.getVariables().indexOf(v));
+				boolean f1v = GetValue(v, i);
+				
+				for (int j = 0; j < f2.getProbabilities().size(); j++)
+				{
+					Variable v2 = f2.getVariables().get(f2.getVariables().indexOf(v));
+					boolean f2v = GetValue(v2, j);
+					if (f1v == f2v)
+					{
+						double pVal = f1.getProbabilities().get(i).value 
+								* f2.getProbabilities().get(j).value;
+						
+						Probability p = new Probability(pVal);
+						f3.getProbabilities().add(p);
+					}
+				}
+			}
+		}
+		
+		Set<Variable> set = new HashSet<Variable>();
+		set.addAll(f1.getVariables());
+		set.addAll(f2.getVariables());
+		System.out.println(set);
+		f3.setVariables(new ArrayList<Variable>(set));
+		System.out.println(f3.getVariables());
+		System.out.println(f3.getProbabilities());
 	}
 	
 	public static boolean GetValue(Variable v, int row)

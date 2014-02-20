@@ -14,18 +14,53 @@ public class Variable
 	{
 	}
 	
-	//================================================================================
-    // Overridden Methods
-    //================================================================================
-	@Override
-	public boolean equals(Object o)
+	public Variable(Variable v)
 	{
-		if (o != null && o instanceof Variable)
+		_desc = v.getDesc();
+	}
+	
+	@Override
+	public int hashCode() 
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_desc == null) ? 0 : _desc.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) 
+	{
+		if (this == obj)
 		{
-			return ((Variable)o).getDesc() == this.getDesc();
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
 		}
 		
-		return false;
+		Variable other = (Variable) obj;
+		if (_desc == null) 
+		{
+			if (other._desc != null)
+				return false;
+		} 
+		else if (!_desc.equals(other._desc))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return _desc;
 	}
 	
 	//================================================================================
