@@ -71,7 +71,8 @@ public class Factor
 	
 	public static boolean GetValue(Variable v, int row)
 	{
-		int mod = row/(v.getIndex() + 1) % 2;
+//		int mod = row/(v.getIndex() + 1) % 2;
+		int mod = (row / (int)Math.pow(2, v.getIndex())) % 2;
 		if (mod == 0)
 		{
 			return true;
