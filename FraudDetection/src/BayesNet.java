@@ -3,7 +3,25 @@ public class BayesNet {
 
 	public static void main(String[] args) 
 	{
-		BayesNet.ProductTest2();
+		BayesNet.SumTest1();
+	}
+	
+	
+	private static void SumTest1()
+	{
+		Factor f = new Factor();
+		Variable A = new Variable();
+		Variable B = new Variable();
+		A.setDesc("a"); B.setDesc("b");
+		A.setIndex(1); B.setIndex(0);
+		
+		f.getProbabilities().add(new Probability(0.9));
+		f.getProbabilities().add(new Probability(0.1));
+		f.getProbabilities().add(new Probability(0.4));
+		f.getProbabilities().add(new Probability(0.6));
+		f.getVariables().add(A); f.getVariables().add(B);
+		
+		Factor.SumOut(f, A);
 	}
 	
 	private static void RestrictTest1()
@@ -25,6 +43,7 @@ public class BayesNet {
 		f.getProbabilities().add(new Probability(0.06));
 		f.getProbabilities().add(new Probability(0.04));
 		f.getVariables().add(A); f.getVariables().add(B); f.getVariables().add(C);
+		Factor.Restrict(f, B, true);
 	}
 	
 	private static void ProductTest1()

@@ -147,9 +147,61 @@ public class Factor
 		return f3;
 	}
 	
-	public static void SumOut(Factor fact, Variable var)
+	public static Factor SumOut(Factor fact, Variable var)
 	{
+		Factor f = new Factor();
+		// for each variable in fact that is not var, add up probs where val is the same
 		
+		// create new list of remaining vars 
+		List<Variable> varList = new ArrayList<Variable>(fact.getVariables());
+		for (int i = 0; i < fact.getVariables().size(); i++)
+		{	
+			int indx = fact.getVariables().get(i).getIndex() - 1;
+			if (fact.getVariables().get(i).getIndex() != 0)
+			{
+				fact.getVariables().get(i).setIndex(indx);
+			}
+		}
+		varList.remove(var);
+		
+		List<List<Boolean>> allVarVals = new ArrayList<List<Boolean>>();
+		for (int i = 0; i < fact.getProbabilities().size(); i++)
+		{
+			List<Boolean> varVals = new ArrayList<Boolean>();
+			for (Variable v : varList)
+			{
+				varVals.add(GetValue(v, i));
+			}
+			if (!allVarVals.contains(varVals))
+			{
+				allVarVals.add(varVals);
+			}
+		}
+		
+		
+		for (List<Boolean> valList : allVarVals)
+		{
+			double summedProb = 0;
+			for (int i = 0; i < fact.getProbabilities().size(); i++)
+			{
+				List<Boolean> varVals = new ArrayList<Boolean>();
+				for (Variable v : varList)
+				{
+					varVals.add(GetValue(v, i));
+				}
+				
+				if (valList.equals(varVals))
+				{
+					summedProb += fact.getProbabilities().get(i).value;
+				}
+			}
+			f.getProbabilities().add(new Probability(summedProb));
+		}
+		
+		f.setVariables(varList);
+		System.out.println(f.getVariables());
+		System.out.println(f.getProbabilities());
+		return f;
 	}
 	
 	public static boolean GetValue(Variable v, int row)
