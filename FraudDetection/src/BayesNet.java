@@ -1,9 +1,89 @@
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BayesNet {
 
 	public static void main(String[] args) 
 	{
-		BayesNet.NormalizeTest1();
+		BayesNet.InferenceTest1();
+	}
+	
+	public static void InferenceTest1()
+	{
+		Factor cloudyFact = new Factor();
+		cloudyFact.getProbabilities().add(new Probability(0.5));
+		cloudyFact.getProbabilities().add(new Probability(0.5));
+		Variable cloudyVar = new Variable();
+		cloudyVar.setIndex(0);
+		cloudyVar.setDesc("cloudy");
+		cloudyFact.getVariables().add(cloudyVar);
+		
+		Factor sprinklerFact = new Factor();
+		sprinklerFact.getProbabilities().add(new Probability(0.1));
+		sprinklerFact.getProbabilities().add(new Probability(0.9));
+		sprinklerFact.getProbabilities().add(new Probability(0.5));
+		sprinklerFact.getProbabilities().add(new Probability(0.5));
+		Variable sprinklerVar = new Variable();
+		sprinklerVar.setIndex(0);
+		sprinklerVar.setDesc("sprinkler");
+		Variable c2var = new Variable(cloudyVar);
+		c2var.setIndex(1);
+		sprinklerFact.getVariables().add(sprinklerVar);
+		sprinklerFact.getVariables().add(c2var);
+		
+		Factor rainFact = new Factor();
+		rainFact.getProbabilities().add(new Probability(0.8));
+		rainFact.getProbabilities().add(new Probability(0.2));
+		rainFact.getProbabilities().add(new Probability(0.2));
+		rainFact.getProbabilities().add(new Probability(0.8));
+		Variable rainVar = new Variable();
+		rainVar.setIndex(0);
+		rainVar.setDesc("rain");
+		Variable c3var = new Variable(cloudyVar);
+		c3var.setIndex(1);
+		rainFact.getVariables().add(rainVar);
+		rainFact.getVariables().add(c3var);
+		
+		Factor wetGrassFact = new Factor();
+		wetGrassFact.getProbabilities().add(new Probability(0.99));
+		wetGrassFact.getProbabilities().add(new Probability(0.01));
+		wetGrassFact.getProbabilities().add(new Probability(0.9));
+		wetGrassFact.getProbabilities().add(new Probability(0.1));
+		wetGrassFact.getProbabilities().add(new Probability(0.9));
+		wetGrassFact.getProbabilities().add(new Probability(0.1));
+		wetGrassFact.getProbabilities().add(new Probability(0.0));
+		wetGrassFact.getProbabilities().add(new Probability(1));
+		Variable wetGrassVar = new Variable();
+		wetGrassVar.setIndex(0);
+		wetGrassVar.setDesc("wetGrass");
+		Variable r2 = new Variable(rainVar);
+		r2.setIndex(1);
+		Variable s2 = new Variable(sprinklerVar);
+		s2.setIndex(2);
+		wetGrassFact.getVariables().add(wetGrassVar);
+		wetGrassFact.getVariables().add(r2);
+		wetGrassFact.getVariables().add(s2);
+		
+		List<Factor> fList = new ArrayList<Factor>();
+		fList.add(cloudyFact);
+		fList.add(sprinklerFact);
+		fList.add(rainFact);
+		fList.add(wetGrassFact);
+		
+		List<Variable> queryVars = new ArrayList<Variable>();
+		sprinklerVar.setValue(true);
+		queryVars.add(sprinklerVar);
+		
+		List<Variable> evidVars = new ArrayList<Variable>();
+		wetGrassVar.setValue(true);
+		evidVars.add(wetGrassVar);
+		
+		List<Variable> hidVars = new ArrayList<Variable>();
+		hidVars.add(rainVar);
+		hidVars.add(cloudyVar);
+		
+		Factor.Inference(fList, queryVars, hidVars, evidVars);
 	}
 	
 	public static void NormalizeTest1()

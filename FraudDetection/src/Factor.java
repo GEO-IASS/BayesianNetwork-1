@@ -134,17 +134,11 @@ public class Factor
 		}
 		
 		// update indices
-		Iterator<Variable> it = f3.getVariables().iterator();
-		int idx = f3.getVariables().size()-1;
-		while(it.hasNext())
-		{
-			Variable v = it.next();
-			v.setIndex(idx);
-			idx--;
-		}
+		UpdateIndices(f3.getVariables());
 		System.out.println(f3.getVariables());
 		return f3;
 	}
+
 	
 	public static Factor SumOut(Factor fact, Variable var)
 	{
@@ -224,9 +218,9 @@ public class Factor
 		// restrict each factor in factList by evidence list
 		for (Variable ev : evidenceVars)
 		{
-			for (Factor f : factList)
+			for (int i = 0; i < factList.size(); i++)
 			{
-				f = Restrict(f, ev, ev.getValue());
+				factList.set(i, Restrict(factList.get(i), ev, ev.getValue()));
 			}
 		}
 		// order remaining (hidden) variables to eliminate
@@ -242,6 +236,7 @@ public class Factor
 					fsWithHV.add(f);
 				}
 			}
+			
 			// multiple factors and sum over the hidden variable for new factor
 			Iterator<Factor> it = fsWithHV.iterator();
 			Factor fNew = null;
@@ -288,6 +283,18 @@ public class Factor
 			return true;
 		}
 		return false;
+	}
+	
+	public static void UpdateIndices(List<Variable> varList) 
+	{
+		Iterator<Variable> it = varList.iterator();
+		int idx = varList.size()-1;
+		while(it.hasNext())
+		{
+			Variable v = it.next();
+			v.setIndex(idx);
+			idx--;
+		}
 	}
 	
 	
