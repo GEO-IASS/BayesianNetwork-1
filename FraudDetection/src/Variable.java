@@ -6,7 +6,9 @@ public class Variable
     //================================================================================
 	private int _index;
 	private String _desc;
+	private boolean _value;
 	
+
 	//================================================================================
     // Constructors
     //================================================================================
@@ -80,5 +82,12 @@ public class Variable
 
 	public void setIndex(int index) {
 		this._index = index;
+	}
+	public boolean getValue() {
+		return _value;
+	}
+
+	public void setValue(boolean _value) {
+		this._value = _value;
 	}
 }

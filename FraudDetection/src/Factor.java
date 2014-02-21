@@ -41,8 +41,8 @@ public class Factor
 		// check if factor contains variable
 		if (!fact.getVariables().contains(var))
 		{
-			System.out.println("Could not restrict: variable not found.");
-			return null;
+			System.out.println("Did not restrict: variable not found.");
+			return fact;
 		}
 		
 		Factor f = new Factor(fact);
@@ -215,6 +215,69 @@ public class Factor
 		System.out.println(fact.getVariables());
 		System.out.println(fact.getProbabilities());
 		return fact;
+	}
+	
+	public static Factor Inference
+		(List<Factor> factList, List<Variable> queryVars, 
+		List<Variable> orderedHiddenVars, List<Variable> evidenceVars)
+	{
+		// restrict each factor in factList by evidence list
+		for (Variable ev : evidenceVars)
+		{
+			for (Factor f : factList)
+			{
+				f = Restrict(f, ev, ev.getValue());
+			}
+		}
+		// order remaining (hidden) variables to eliminate
+		// for each hidden var
+		for (Variable hidVar : orderedHiddenVars)
+		{
+			List<Factor> fsWithHV = new ArrayList<Factor>();
+			for (Factor f : factList)
+			{
+				// get factors that have the hidden variable
+				if (f.getVariables().contains(hidVar))
+				{
+					fsWithHV.add(f);
+				}
+			}
+			// multiple factors and sum over the hidden variable for new factor
+			Iterator<Factor> it = fsWithHV.iterator();
+			Factor fNew = null;
+			if (it.hasNext())
+			{					
+				fNew = it.next();
+				while(it.hasNext())
+				{
+					fNew = Multiply(fNew, it.next());
+				}
+				fNew = SumOut(fNew, hidVar);
+			}
+			// remove those factors that have the hidden variable
+			it = fsWithHV.iterator();
+			while (it.hasNext())
+			{
+				factList.remove(it.next());
+			}
+			// add new factor to factor list
+			factList.add(fNew);
+		}
+			
+		// take product of remaining factors
+		Iterator<Factor> it = factList.iterator();
+		Factor f = null;
+		if (it.hasNext())
+		{					
+			f = it.next();
+			while(it.hasNext())
+			{
+				f = Multiply(f, it.next());
+			}
+		}
+		// normalize
+		Normalize(f);
+		return f;
 	}
 	
 	public static boolean GetValue(Variable v, int row)
