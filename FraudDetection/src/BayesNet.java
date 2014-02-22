@@ -94,17 +94,42 @@ public class BayesNet {
 		evidenceVars.get(0).setValue(true);
 		evidenceVars.get(1).setValue(false);
 		evidenceVars.get(2).setValue(true);
-//				
-//		Factor.Multiply(fraudF, ownsCompF);
-//		System.out.println("final");
 
-		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+		
+		// info for P(Fraud | FP, !IP, CRP, trav)
+//		 query variables
+		List<String> varNamesC = new ArrayList<String>()
+			{{
+				add("fraud");
+			}};
+		List<Variable> queryVarsC = BayesNet.MakeVariables(varNamesC);
+		queryVarsC.get(0).setValue(true);
+		
+		// hidden variables
+		varNamesC = new ArrayList<String>()
+				{{
+					add("oc");
+				}};
+		List<Variable> orderedHiddenVarsC = BayesNet.MakeVariables(varNamesC);
+		
+		// evidence
+		varNamesC = new ArrayList<String>()
+				{{
+					add("fp");
+					add("ip");
+					add("crp");
+					add("trav");
+				}};
+		List<Variable> evidenceVarsC = BayesNet.MakeVariables(varNamesC);
+		evidenceVarsC.get(0).setValue(true);
+		evidenceVarsC.get(1).setValue(false);
+		evidenceVarsC.get(2).setValue(true);
+		evidenceVarsC.get(3).setValue(true);
+		
+		Factor.Inference(factList, queryVarsC, orderedHiddenVarsC, evidenceVarsC);
+//		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
 //		Factor.Inference(factList, queryVars1, orderedHiddenVars1, evidenceVars1);
-//		Variable v = new Variable();
-//		v.setDesc("trav");
-//		v.setIndex(0);
-//		v.setValue(true);
-//		Factor.SumOut(fraudF, v);
+
 	}
 	
 	
