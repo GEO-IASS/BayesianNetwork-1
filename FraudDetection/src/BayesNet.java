@@ -8,7 +8,7 @@ public class BayesNet {
 	public static void main(String[] args) 
 	{
 		Factor fraudF = new Factor();
-		fraudF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.04)));
+		fraudF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.004)));
 		fraudF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
 		
 		Factor foreignF = new Factor();
@@ -28,6 +28,41 @@ public class BayesNet {
 		
 		Factor travelF = new Factor();
 		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05)));
+		
+		// factor list
+		List<Factor> factList = new ArrayList<Factor>();
+		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
+		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
+		
+		// query variables
+		List<String> varNames = new ArrayList<String>()
+			{{
+				add("fp");
+				add("ip");
+				add("crp");
+			}};
+		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
+		queryVars.get(0).setValue(true);
+		queryVars.get(1).setValue(false);
+		queryVars.get(2).setValue(true);
+		
+		// hidden variables
+		varNames = new ArrayList<String>()
+				{{
+					add("trav");
+					add("oc");
+				}};
+		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
+		
+		// evidence
+		varNames = new ArrayList<String>()
+				{{
+					add("fraud");
+				}};
+		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
+		evidenceVars.get(0).setValue(true);
+		
+		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
 	}
 	
 	public static List<Probability> MakeProbabilities(List<Double> probs)

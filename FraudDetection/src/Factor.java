@@ -57,12 +57,8 @@ public class Factor
 		}
 		
 		// remove variable from factor and update indices
-		for (int i = var.getIndex(); i < f.getVariables().size(); i++)
-		{
-			int idx = f.getVariables().get(i).getIndex() - 1;
-			f.getVariables().get(i).setIndex(idx);
-		}
 		f.getVariables().remove(var);
+		UpdateIndices(f.getVariables());
 		
 		// remove probabilities
 		Iterator<Probability> it = f.getProbabilities().iterator();
@@ -220,6 +216,13 @@ public class Factor
 		{
 			for (int i = 0; i < factList.size(); i++)
 			{
+				List<Variable> factVars = factList.get(i).getVariables();
+				if (factVars.contains(ev))
+				{
+					boolean val = ev.getValue();
+					ev = factVars.get(factVars.indexOf(ev));
+					ev.setValue(val);
+				}
 				factList.set(i, Restrict(factList.get(i), ev, ev.getValue()));
 			}
 		}
