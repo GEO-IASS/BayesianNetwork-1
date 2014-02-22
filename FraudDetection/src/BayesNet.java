@@ -57,10 +57,9 @@ public class BayesNet {
 		// evidence
 		varNames = new ArrayList<String>()
 				{{
-//					add("trav");
+
 				}};
 		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
-//		evidenceVars.get(0).setValue(true);
 		
 		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
 	}

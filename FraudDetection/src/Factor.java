@@ -139,12 +139,8 @@ public class Factor
 		
 		// create new list of remaining vars 
 		List<Variable> varList = new ArrayList<Variable>(fact.getVariables());
-		for (int i = 0; i < fact.getVariables().size(); i++)
-		{	
-			int indx = fact.getVariables().size() - 1 - i;
-			varList.get(i).setIndex(indx);
-		}
 		varList.remove(var);
+		UpdateIndices(varList);
 		
 		// create list of distinct variable combinations from remaining vars
 		List<List<Boolean>> allVarVals = new ArrayList<List<Boolean>>();
