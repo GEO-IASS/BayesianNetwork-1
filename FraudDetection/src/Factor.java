@@ -139,7 +139,11 @@ public class Factor
 		Factor f = new Factor();
 		
 		// create new list of remaining vars 
-		List<Variable> varList = new ArrayList<Variable>(fact.getVariables());
+		List<Variable> varList = new ArrayList<Variable>();
+		for (Variable v : fact.getVariables())
+		{
+			varList.add(new Variable(v));
+		}
 		varList.remove(var);
 		UpdateIndices(varList);
 		
@@ -167,6 +171,7 @@ public class Factor
 				List<Boolean> varVals = new ArrayList<Boolean>();
 				for (Variable v : varList)
 				{
+					v = fact.getVariables().get(fact.getVariables().indexOf(v));
 					varVals.add(GetValue(v, i));
 				}
 				
@@ -179,6 +184,7 @@ public class Factor
 		}
 		
 		f.setVariables(varList);
+		System.out.println(f);
 		return f;
 	}
 	
@@ -194,6 +200,7 @@ public class Factor
 		{
 			probList.get(i).value /= sum;
 		}
+		
 		return fact;
 	}
 	

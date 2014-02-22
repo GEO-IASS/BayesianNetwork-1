@@ -31,40 +31,44 @@ public class BayesNet {
 		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05, 0.95)));
 		travelF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
 		
+		// factor list
+		List<Factor> factList = new ArrayList<Factor>();
+		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
+		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
 		
-//		// factor list
-//		List<Factor> factList = new ArrayList<Factor>();
-//		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
-//		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
-//		
-//		// query variables
-//		List<String> varNames = new ArrayList<String>()
-//			{{
-//				add("fraud");
-//			}};
-//		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
-//		queryVars.get(0).setValue(true);
-//
-//		
-//		// hidden variables
-//		varNames = new ArrayList<String>()
-//				{{
-//					add("trav");
-//					add("fp");
-//					add("ip");
-//					add("oc");
-//					add("crp");
-//				}};
-//		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
-//		
-//		// evidence
-//		varNames = new ArrayList<String>()
-//				{{
-//
-//				}};
-//		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
-//		
-//		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+		// query variables
+		List<String> varNames = new ArrayList<String>()
+			{{
+				add("fraud");
+			}};
+		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
+		queryVars.get(0).setValue(true);
+
+		
+		// hidden variables
+		varNames = new ArrayList<String>()
+				{{
+					add("trav");
+					add("fp");
+					add("ip");
+					add("oc");
+					add("crp");
+				}};
+		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
+		
+		// evidence
+		varNames = new ArrayList<String>()
+				{{
+
+				}};
+		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
+		
+		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+//		Variable v = new Variable();
+//		v.setDesc("trav");
+//		v.setIndex(0);
+//		v.setValue(true);
+//		Factor.SumOut(fraudF, v);
 	}
 	
 	
