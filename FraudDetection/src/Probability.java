@@ -1,3 +1,6 @@
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 
 public class Probability {
 	public double value;
@@ -12,6 +15,8 @@ public class Probability {
 	@Override
 	public String toString()
 	{
-		return String.valueOf(value);
+		NumberFormat formatter = new DecimalFormat("###.#######");
+		return formatter.format(value);
+//		return String.valueOf(value);
 	}
 }

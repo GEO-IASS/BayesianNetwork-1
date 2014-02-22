@@ -77,7 +77,7 @@ public class Factor
 	{
 		List<Variable> intersectVars = new ArrayList<Variable>(f1.getVariables());
 		intersectVars.retainAll(f2.getVariables());
-		Factor f3 = new Factor();
+		Factor f3 = new Factor();	
 		
 		// for each probability in f1, find corresponding match in f2 and multiply
 		for (int i = 0; i < f1.getProbabilities().size(); i++)
@@ -129,6 +129,7 @@ public class Factor
 		
 		// update indices
 		UpdateIndices(f3.getVariables());
+		System.out.println(f3);
 		return f3;
 	}
 

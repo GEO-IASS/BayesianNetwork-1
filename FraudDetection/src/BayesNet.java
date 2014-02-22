@@ -8,60 +8,63 @@ public class BayesNet {
 	public static void main(String[] args) 
 	{
 		Factor fraudF = new Factor();
-		fraudF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.004)));
-		fraudF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
+		fraudF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.004, 0.99, 0.996)));
+		fraudF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "trav")));
 		
 		Factor foreignF = new Factor();
-		foreignF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.9, 0.1, 0.9, 0.01)));
-		foreignF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "trav")));
+		foreignF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.9, 0.1, 0.9, 0.01, 0.1, 0.9, 0.1, 0.99)));
+		foreignF.setVariables(BayesNet.MakeVariables(Arrays.asList("fp", "fraud", "trav")));
 		
 		Factor ownsCompF = new Factor();
-		ownsCompF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.7)));
+		ownsCompF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.7, 0.3)));
+		ownsCompF.setVariables(BayesNet.MakeVariables(Arrays.asList("oc")));
 		
 		Factor internetF = new Factor();
-		internetF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.02, 0.011, 0.01, 0.001)));
-		internetF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "oc")));
+		internetF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.02, 0.011, 0.01, 0.001, 0.98, 0.989, 0.99, 0.999)));
+		internetF.setVariables(BayesNet.MakeVariables(Arrays.asList("ip", "fraud", "oc")));
 		
 		Factor compBuyF = new Factor();
-		compBuyF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.001)));
-		compBuyF.setVariables(BayesNet.MakeVariables(Arrays.asList("oc")));
+		compBuyF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.001, 0.9, 0.999)));
+		compBuyF.setVariables(BayesNet.MakeVariables(Arrays.asList("crp", "oc")));
 		
 		Factor travelF = new Factor();
-		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05)));
+		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05, 0.95)));
+		travelF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
 		
-		// factor list
-		List<Factor> factList = new ArrayList<Factor>();
-		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
-		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
 		
-		// query variables
-		List<String> varNames = new ArrayList<String>()
-			{{
-				add("fraud");
-			}};
-		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
-		queryVars.get(0).setValue(true);
-
-		
-		// hidden variables
-		varNames = new ArrayList<String>()
-				{{
-					add("trav");
-					add("fp");
-					add("ip");
-					add("oc");
-					add("crp");
-				}};
-		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
-		
-		// evidence
-		varNames = new ArrayList<String>()
-				{{
-
-				}};
-		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
-		
-		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+//		// factor list
+//		List<Factor> factList = new ArrayList<Factor>();
+//		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
+//		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
+//		
+//		// query variables
+//		List<String> varNames = new ArrayList<String>()
+//			{{
+//				add("fraud");
+//			}};
+//		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
+//		queryVars.get(0).setValue(true);
+//
+//		
+//		// hidden variables
+//		varNames = new ArrayList<String>()
+//				{{
+//					add("trav");
+//					add("fp");
+//					add("ip");
+//					add("oc");
+//					add("crp");
+//				}};
+//		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
+//		
+//		// evidence
+//		varNames = new ArrayList<String>()
+//				{{
+//
+//				}};
+//		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
+//		
+//		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
 	}
 	
 	
@@ -116,6 +119,11 @@ public class BayesNet {
 			varList.add(v);
 		}
 		return varList;
+	}
+	
+	public static void SingleVarMultTest1()
+	{
+		
 	}
 	
 	public static void InferenceTest1()
