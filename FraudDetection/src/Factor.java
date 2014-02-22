@@ -79,6 +79,37 @@ public class Factor
 		intersectVars.retainAll(f2.getVariables());
 		Factor f3 = new Factor();	
 		
+		// case where no vars intersect
+		if (intersectVars.size() == 0)
+		{
+			List<Probability> p1List = f1.getProbabilities();
+			List<Probability> p2List = f2.getProbabilities();
+			
+			// create new probability list
+			for (Probability p1 : p1List)
+			{
+				for (Probability p2 : p2List)
+				{
+					Probability pNew = new Probability(p1.value * p2.value);
+					f3.getProbabilities().add(pNew);
+				}
+			}
+			
+			// create new variable list
+			for (Variable v : f1.getVariables())
+			{
+				f3.getVariables().add(v);
+			}
+			for (Variable v : f2.getVariables())
+			{
+				f3.getVariables().add(v);
+			}
+			UpdateIndices(f3.getVariables());
+			
+			System.out.println(f3);
+			return f3;
+		}
+		
 		// for each probability in f1, find corresponding match in f2 and multiply
 		for (int i = 0; i < f1.getProbabilities().size(); i++)
 		{

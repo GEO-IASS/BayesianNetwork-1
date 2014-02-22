@@ -36,17 +36,19 @@ public class BayesNet {
 		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
 		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
 		
+		
+		// info for P(Fraud)
 		// query variables
-		List<String> varNames = new ArrayList<String>()
+		List<String> varNames1 = new ArrayList<String>()
 			{{
 				add("fraud");
 			}};
-		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
-		queryVars.get(0).setValue(true);
+		List<Variable> queryVars1 = BayesNet.MakeVariables(varNames1);
+		queryVars1.get(0).setValue(true);
 
 		
 		// hidden variables
-		varNames = new ArrayList<String>()
+		varNames1 = new ArrayList<String>()
 				{{
 					add("trav");
 					add("fp");
@@ -54,16 +56,50 @@ public class BayesNet {
 					add("oc");
 					add("crp");
 				}};
+		List<Variable> orderedHiddenVars1 = BayesNet.MakeVariables(varNames1);
+		
+		// evidence
+		varNames1 = new ArrayList<String>()
+				{{
+
+				}};
+		List<Variable> evidenceVars1 = BayesNet.MakeVariables(varNames1);
+		
+		
+		// info for P(FP, !IP, CRP | Fraud)
+//		 query variables
+		List<String> varNames = new ArrayList<String>()
+			{{
+				add("fp");
+				add("ip");
+				add("crp");
+			}};
+		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
+		queryVars.get(0).setValue(true);
+		queryVars.get(1).setValue(false);
+		queryVars.get(2).setValue(true);
+		
+		// hidden variables
+		varNames = new ArrayList<String>()
+				{{
+					add("trav");
+					add("oc");
+				}};
 		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
 		
 		// evidence
 		varNames = new ArrayList<String>()
 				{{
-
+					add("fraud");
 				}};
 		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
-		
-		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+		evidenceVars.get(0).setValue(true);
+//				
+		Factor.Multiply(fraudF, ownsCompF);
+//		System.out.println("final");
+
+//		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
+//		Factor.Inference(factList, queryVars1, orderedHiddenVars1, evidenceVars1);
 //		Variable v = new Variable();
 //		v.setDesc("trav");
 //		v.setIndex(0);
