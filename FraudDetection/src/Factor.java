@@ -41,7 +41,6 @@ public class Factor
 		// check if factor contains variable
 		if (!fact.getVariables().contains(var))
 		{
-			System.out.println("Did not restrict: variable not found.");
 			return fact;
 		}
 		
@@ -105,8 +104,7 @@ public class Factor
 				f3.getVariables().add(v);
 			}
 			UpdateIndices(f3.getVariables());
-			
-			System.out.println(f3);
+
 			return f3;
 		}
 		
@@ -160,7 +158,7 @@ public class Factor
 		
 		// update indices
 		UpdateIndices(f3.getVariables());
-		System.out.println(f3);
+
 		return f3;
 	}
 
@@ -215,7 +213,7 @@ public class Factor
 		}
 		
 		f.setVariables(varList);
-		System.out.println(f);
+
 		return f;
 	}
 	
@@ -244,6 +242,7 @@ public class Factor
 		{
 			for (int i = 0; i < factList.size(); i++)
 			{
+				System.out.println(factList.get(i));
 				List<Variable> factVars = factList.get(i).getVariables();
 				if (factVars.contains(ev))
 				{
@@ -251,9 +250,7 @@ public class Factor
 					ev = factVars.get(factVars.indexOf(ev));
 					ev.setValue(val);
 				}
-				System.out.println("After restrict:");
 				factList.set(i, Restrict(factList.get(i), ev, ev.getValue()));
-				System.out.println(factList);
 			}
 		}
 
@@ -280,9 +277,6 @@ public class Factor
 					fNew = Multiply(fNew, it.next());
 				}
 				fNew = SumOut(fNew, hidVar);
-				System.out.format("Summed out %s \n", hidVar);
-				System.out.println("Created new factor:");
-				System.out.println(fNew);
 			}
 			
 			// remove those factors that have the hidden variable
@@ -296,8 +290,6 @@ public class Factor
 			{				
 				factList.add(fNew);
 			}
-			System.out.println("updated factList:");
-			System.out.println(factList);
 		}
 			
 		// take product of remaining factors
@@ -348,9 +340,18 @@ public class Factor
     //================================================================================
 	
 	@Override
-	public String toString() {
-		return "Factor: [_variables=" + _variables + ", _probabilities="
-				+ _probabilities + "]";
+	public String toString() 
+	{
+		String output = _variables.toString() + "  P("+ _variables.get(0) + ")" +"\n";
+		for (int i = 0; i < _probabilities.size(); i++) 
+		{
+			for (int v  = 0; v < _variables.size(); v++) 
+			{
+				output += (GetValue(_variables.get(v), i) ? "  T" : "  F") + "  ";
+			}
+		output += "  : " + _probabilities.get(i) + ((i != _probabilities.size()-1) ? "\n" : "");
+		}
+		return output;
 	}
 	
 	//================================================================================

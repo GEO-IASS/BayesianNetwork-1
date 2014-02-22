@@ -15,7 +15,7 @@ public class Probability {
 	@Override
 	public String toString()
 	{
-		NumberFormat formatter = new DecimalFormat("###.#######");
+		NumberFormat formatter = new DecimalFormat("###.##########");
 		return formatter.format(value);
 //		return String.valueOf(value);
 	}
