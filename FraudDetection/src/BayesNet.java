@@ -37,34 +37,64 @@ public class BayesNet {
 		// query variables
 		List<String> varNames = new ArrayList<String>()
 			{{
-				add("fp");
-				add("ip");
-				add("crp");
+				add("fraud");
 			}};
 		List<Variable> queryVars = BayesNet.MakeVariables(varNames);
 		queryVars.get(0).setValue(true);
-		queryVars.get(1).setValue(false);
-		queryVars.get(2).setValue(true);
+
 		
 		// hidden variables
 		varNames = new ArrayList<String>()
 				{{
 					add("trav");
+					add("fp");
+					add("ip");
 					add("oc");
+					add("crp");
 				}};
 		List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
 		
 		// evidence
 		varNames = new ArrayList<String>()
 				{{
-					add("fraud");
+//					add("trav");
 				}};
 		List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
-		evidenceVars.get(0).setValue(true);
+//		evidenceVars.get(0).setValue(true);
 		
 		Factor.Inference(factList, queryVars, orderedHiddenVars, evidenceVars);
 	}
 	
+	
+	// info for P(FP, !IP, CRP | Fraud)
+	// query variables
+//			List<String> varNames = new ArrayList<String>()
+//				{{
+//					add("fp");
+//					add("ip");
+//					add("crp");
+//				}};
+//			List<Variable> queryVars = BayesNet.MakeVariables(varNames);
+//			queryVars.get(0).setValue(true);
+//			queryVars.get(1).setValue(false);
+//			queryVars.get(2).setValue(true);
+//			
+//			// hidden variables
+//			varNames = new ArrayList<String>()
+//					{{
+//						add("trav");
+//						add("oc");
+//					}};
+//			List<Variable> orderedHiddenVars = BayesNet.MakeVariables(varNames);
+//			
+//			// evidence
+//			varNames = new ArrayList<String>()
+//					{{
+//						add("fraud");
+//					}};
+//			List<Variable> evidenceVars = BayesNet.MakeVariables(varNames);
+//			evidenceVars.get(0).setValue(true);
+//			
 	public static List<Probability> MakeProbabilities(List<Double> probs)
 	{
 		List<Probability> pList = new ArrayList<Probability>();

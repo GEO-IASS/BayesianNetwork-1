@@ -70,7 +70,6 @@ public class Factor
 				it.remove();
 			}
 		}
-		System.out.println(f.getProbabilities());
 		return f;
 	}
 	
@@ -104,7 +103,6 @@ public class Factor
 					double pVal = f1.getProbabilities().get(i).value 
 							* f2.getProbabilities().get(j).value;
 					
-					System.out.format("%d,  %d, [%b], %f \n", i, j, varVals1, pVal);
 					Probability p = new Probability(pVal);
 					f3.getProbabilities().add(p);
 				}
@@ -131,7 +129,6 @@ public class Factor
 		
 		// update indices
 		UpdateIndices(f3.getVariables());
-		System.out.println(f3.getVariables());
 		return f3;
 	}
 
@@ -185,8 +182,6 @@ public class Factor
 		}
 		
 		f.setVariables(varList);
-		System.out.println(f.getVariables());
-		System.out.println(f.getProbabilities());
 		return f;
 	}
 	
@@ -202,8 +197,6 @@ public class Factor
 		{
 			probList.get(i).value /= sum;
 		}
-		System.out.println(fact.getVariables());
-		System.out.println(fact.getProbabilities());
 		return fact;
 	}
 	
@@ -223,11 +216,12 @@ public class Factor
 					ev = factVars.get(factVars.indexOf(ev));
 					ev.setValue(val);
 				}
+				System.out.println("After restrict:");
 				factList.set(i, Restrict(factList.get(i), ev, ev.getValue()));
+				System.out.println(factList);
 			}
 		}
-		// order remaining (hidden) variables to eliminate
-		// for each hidden var
+
 		for (Variable hidVar : orderedHiddenVars)
 		{
 			List<Factor> fsWithHV = new ArrayList<Factor>();
@@ -251,7 +245,11 @@ public class Factor
 					fNew = Multiply(fNew, it.next());
 				}
 				fNew = SumOut(fNew, hidVar);
+				System.out.format("Summed out %s \n", hidVar);
+				System.out.println("Created new factor:");
+				System.out.println(fNew);
 			}
+			
 			// remove those factors that have the hidden variable
 			it = fsWithHV.iterator();
 			while (it.hasNext())
@@ -259,7 +257,12 @@ public class Factor
 				factList.remove(it.next());
 			}
 			// add new factor to factor list
-			factList.add(fNew);
+			if (!(fNew == null))
+			{				
+				factList.add(fNew);
+			}
+			System.out.println("updated factList:");
+			System.out.println(factList);
 		}
 			
 		// take product of remaining factors
@@ -273,8 +276,12 @@ public class Factor
 				f = Multiply(f, it.next());
 			}
 		}
+		System.out.println("un-normalized factor:");
+		System.out.println(f);
 		// normalize
 		Normalize(f);
+		System.out.println("final factor:");
+		System.out.println(f);
 		return f;
 	}
 	
@@ -302,12 +309,23 @@ public class Factor
 	
 	
 	//================================================================================
+    // Overidden Methods
+    //================================================================================
+	
+	@Override
+	public String toString() {
+		return "Factor: [_variables=" + _variables + ", _probabilities="
+				+ _probabilities + "]";
+	}
+	
+	//================================================================================
     // Accessors
     //================================================================================
 	
 	public List<Variable> getVariables() {
 		return _variables;
 	}
+
 	public void setVariables(List<Variable> _variables) {
 		this._variables = _variables;
 	}
