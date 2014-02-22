@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -6,7 +7,51 @@ public class BayesNet {
 
 	public static void main(String[] args) 
 	{
-		BayesNet.InferenceTest1();
+		Factor fraudF = new Factor();
+		fraudF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.04)));
+		fraudF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
+		
+		Factor foreignF = new Factor();
+		foreignF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.9, 0.1, 0.9, 0.01)));
+		foreignF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "trav")));
+		
+		Factor ownsCompF = new Factor();
+		ownsCompF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.7)));
+		
+		Factor internetF = new Factor();
+		internetF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.02, 0.011, 0.01, 0.001)));
+		internetF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "oc")));
+		
+		Factor compBuyF = new Factor();
+		compBuyF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.01, 0.001)));
+		compBuyF.setVariables(BayesNet.MakeVariables(Arrays.asList("oc")));
+		
+		Factor travelF = new Factor();
+		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05)));
+	}
+	
+	public static List<Probability> MakeProbabilities(List<Double> probs)
+	{
+		List<Probability> pList = new ArrayList<Probability>();
+		for (int i = 0; i < probs.size(); i++)
+		{
+			Probability p = new Probability(probs.get(i));
+			pList.add(p);
+		}
+		return pList;
+	}
+	
+	public static List<Variable> MakeVariables(List<String> names)
+	{
+		List<Variable> varList = new ArrayList<Variable>();
+		for (int i = 0; i < names.size(); i++)
+		{
+			Variable v = new Variable();
+			v.setDesc(names.get(i));
+			v.setIndex(names.size() - 1 - i);
+			varList.add(v);
+		}
+		return varList;
 	}
 	
 	public static void InferenceTest1()
