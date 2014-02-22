@@ -253,6 +253,11 @@ public class Factor
 				factList.set(i, Restrict(factList.get(i), ev, ev.getValue()));
 			}
 		}
+		System.out.println("-------------------------------------");
+		System.out.println("FACTORS AFTER RESTRICTING BY EVIDENCE:");
+		System.out.println("-------------------------------------");
+		System.out.println(factList);
+		System.out.println();
 
 		for (Variable hidVar : orderedHiddenVars)
 		{
@@ -265,6 +270,13 @@ public class Factor
 					fsWithHV.add(f);
 				}
 			}
+			
+			System.out.println("-------------------------------------");
+			System.out.println("FACTORS TO BE REPLACED:");
+			System.out.format("(Multiply factors and SumOut %s)\n", hidVar);
+			System.out.println("-------------------------------------");
+			System.out.println(fsWithHV);
+			System.out.println();
 			
 			// multiple factors and sum over the hidden variable for new factor
 			Iterator<Factor> it = fsWithHV.iterator();
@@ -279,6 +291,12 @@ public class Factor
 				fNew = SumOut(fNew, hidVar);
 			}
 			
+			System.out.println("-------------------------------------");
+			System.out.println("REPLACED WITH:");
+			System.out.println("-------------------------------------");
+			System.out.println(fNew);
+			System.out.println();
+			
 			// remove those factors that have the hidden variable
 			it = fsWithHV.iterator();
 			while (it.hasNext())
@@ -291,6 +309,12 @@ public class Factor
 				factList.add(fNew);
 			}
 		}
+		
+		System.out.println("-------------------------------------");
+		System.out.println("TAKE PRODUCT OF REMAINING FACTORS:");
+		System.out.println("-------------------------------------");
+		System.out.println(factList);
+		System.out.println();
 			
 		// take product of remaining factors
 		Iterator<Factor> it = factList.iterator();
@@ -303,11 +327,17 @@ public class Factor
 				f = Multiply(f, it.next());
 			}
 		}
-		System.out.println("un-normalized factor:");
+		
+		System.out.println("-------------------------------------");
+		System.out.println("RESULT FACTOR:");
+		System.out.println("-------------------------------------");
+		System.out.println();
+		
+		System.out.println("UN-NORMALIZED FACTOR:");
 		System.out.println(f);
 		// normalize
 		Normalize(f);
-		System.out.println("final factor:");
+		System.out.println("FINAL FACTOR:");
 		System.out.println(f);
 		return f;
 	}
@@ -342,6 +372,10 @@ public class Factor
 	@Override
 	public String toString() 
 	{
+		if (_variables.size() == 0)
+		{
+			return "";
+		}
 		String output = _variables.toString() + "  P("+ _variables.get(0) + ")" +"\n";
 		for (int i = 0; i < _probabilities.size(); i++) 
 		{
