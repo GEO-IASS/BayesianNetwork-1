@@ -242,7 +242,6 @@ public class Factor
 		{
 			for (int i = 0; i < factList.size(); i++)
 			{
-				System.out.println(factList.get(i));
 				List<Variable> factVars = factList.get(i).getVariables();
 				if (factVars.contains(ev))
 				{
@@ -256,7 +255,10 @@ public class Factor
 		System.out.println("-------------------------------------");
 		System.out.println("FACTORS AFTER RESTRICTING BY EVIDENCE:");
 		System.out.println("-------------------------------------");
-		System.out.println(factList);
+		for (Factor f : factList)
+		{
+			System.out.println(f);
+		}
 		System.out.println();
 
 		for (Variable hidVar : orderedHiddenVars)
@@ -275,7 +277,10 @@ public class Factor
 			System.out.println("FACTORS TO BE REPLACED:");
 			System.out.format("(Multiply factors and SumOut %s)\n", hidVar);
 			System.out.println("-------------------------------------");
-			System.out.println(fsWithHV);
+			for (Factor f : fsWithHV)
+			{
+				System.out.println(f);
+			}
 			System.out.println();
 			
 			// multiple factors and sum over the hidden variable for new factor
@@ -313,7 +318,10 @@ public class Factor
 		System.out.println("-------------------------------------");
 		System.out.println("TAKE PRODUCT OF REMAINING FACTORS:");
 		System.out.println("-------------------------------------");
-		System.out.println(factList);
+		for (Factor f : factList)
+		{
+			System.out.println(f);
+		}
 		System.out.println();
 			
 		// take product of remaining factors
@@ -372,11 +380,16 @@ public class Factor
 	@Override
 	public String toString() 
 	{
+		String output = "";
 		if (_variables.size() == 0)
 		{
-			return "";
+			output = _variables.toString() + "  P()" +"\n";
 		}
-		String output = _variables.toString() + "  P("+ _variables.get(0) + ")" +"\n";
+		else
+		{
+			output = _variables.toString() + "  P("+ _variables.get(0) + ")" +"\n";
+		}
+
 		for (int i = 0; i < _probabilities.size(); i++) 
 		{
 			for (int v  = 0; v < _variables.size(); v++) 
