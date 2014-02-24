@@ -42,10 +42,15 @@ public class BayesNet {
 		travelF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.05, 0.95)));
 		travelF.setVariables(BayesNet.MakeVariables(Arrays.asList("trav")));
 		
+		Factor utilityF = new Factor();
+		utilityF.setProbabilities(BayesNet.MakeProbabilities(Arrays.asList(0.0, -1000.0, -10.0, 5.0)));
+		utilityF.setVariables(BayesNet.MakeVariables(Arrays.asList("fraud", "block")));
+		
 		// factor list
 		List<Factor> factList = new ArrayList<Factor>();
 		factList.add(fraudF); factList.add(foreignF); factList.add(ownsCompF);
 		factList.add(internetF); factList.add(compBuyF);factList.add(travelF);
+		factList.add(utilityF);
 		
 		
 		// info for P(Fraud)
@@ -223,6 +228,67 @@ public class BayesNet {
 		evidenceVarsD1c.get(1).setValue(true);
 		evidenceVarsD1c.get(2).setValue(false);
 		
+		// info for EU(Block | FP, ~IP, CRP)
+//		 query variables
+		List<String> varNames3b = new ArrayList<String>()
+			{{
+				add("block");
+			}};
+		List<Variable> queryVars3b = BayesNet.MakeVariables(varNames3b);
+		queryVars3b.get(0).setValue(true);
+		
+		// hidden variables
+		varNames3b = new ArrayList<String>()
+				{{
+					add("trav");
+					add("fraud");
+					add("oc");
+				}};
+		List<Variable> orderedHiddenVars3b = BayesNet.MakeVariables(varNames3b);
+		
+		// evidence
+		varNames3b = new ArrayList<String>()
+				{{
+					add("fp");
+					add("ip");
+					add("crp");
+				}};
+		List<Variable> evidenceVars3b = BayesNet.MakeVariables(varNames3b);
+		evidenceVars3b.get(0).setValue(true);
+		evidenceVars3b.get(1).setValue(false);
+		evidenceVars3b.get(2).setValue(true);
+		
+		// info for EU(Block | FP, ~IP, CRP, TRAV)
+//		 query variables
+		List<String> varNames3c = new ArrayList<String>()
+			{{
+				add("block");
+			}};
+		List<Variable> queryVars3c = BayesNet.MakeVariables(varNames3c);
+		queryVars3c.get(0).setValue(true);
+		
+		// hidden variables
+		varNames3c = new ArrayList<String>()
+				{{
+					add("fraud");
+					add("oc");
+				}};
+		List<Variable> orderedHiddenVars3c = BayesNet.MakeVariables(varNames3c);
+		
+		// evidence
+		varNames3c = new ArrayList<String>()
+				{{
+					add("fp");
+					add("ip");
+					add("crp");
+					add("trav");
+				}};
+		List<Variable> evidenceVars3c = BayesNet.MakeVariables(varNames3c);
+		evidenceVars3c.get(0).setValue(true);
+		evidenceVars3c.get(1).setValue(false);
+		evidenceVars3c.get(2).setValue(true);
+		evidenceVars3c.get(3).setValue(false);
+		
 
 //		System.out.println("=====================================");
 //		System.out.println("-------------- P(Fraud) -------------");
@@ -249,10 +315,21 @@ public class BayesNet {
 //		System.out.println("=====================================");
 //		Factor.Inference(factList, queryVarsD1b, orderedHiddenVarsD1b, evidenceVarsD1b);
 //		
+//		System.out.println("=====================================");
+//		System.out.println("----- P(Fraud | IP, CRP, ~TRAV) -----");
+//		System.out.println("=====================================");
+//		Factor.Inference(factList, queryVarsD1c, orderedHiddenVarsD1c, evidenceVarsD1c);
+		
+//		System.out.println("=====================================");
+//		System.out.println("----- EU(BLOCK | FP, ~IP, CRP) -----");
+//		System.out.println("=====================================");
+//		Factor.Inference(factList, queryVars3b, orderedHiddenVars3b, evidenceVars3b);
+		
+		
 		System.out.println("=====================================");
-		System.out.println("----- P(Fraud | IP, CRP, ~TRAV) -----");
+		System.out.println("-- EU(BLOCK | FP, ~IP, CRP, ~TRAV) ---");
 		System.out.println("=====================================");
-		Factor.Inference(factList, queryVarsD1c, orderedHiddenVarsD1c, evidenceVarsD1c);
+		Factor.Inference(factList, queryVars3c, orderedHiddenVars3c, evidenceVars3c);
 
 	}
 	
